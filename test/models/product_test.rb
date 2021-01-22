@@ -3,13 +3,6 @@ require 'test_helper'
 class ProductTest < ActiveSupport::TestCase
   fixtures :products
 
-  def new_product(image_url)
-    Product.new(title: "My Book",
-                description: "yyy",
-                price: 1,
-                image_url: image_url)
-  end
-
   test "product attruibutes must not be empty" do
     product = Product.new
     assert product.invalid?
@@ -18,9 +11,10 @@ class ProductTest < ActiveSupport::TestCase
     assert product.errors[:price].any?
     assert product.errors[:image_url].any?
   end
+
   test "product price must be positive" do
-    product = Product.new(title: "My Book",
-                          description: "yyy",
+    product = Product.new(title: "My Book Title",
+                          description: "description of book.",
                           image_url: "zzz.jpg")
     product.price = -1
     assert product.invalid?
@@ -32,6 +26,13 @@ class ProductTest < ActiveSupport::TestCase
 
     product.price = 1
     assert product.valid?
+  end
+
+  def new_product(image_url)
+    Product.new(title: "My Book Title",
+                description: "yyy",
+                price: 1,
+                image_url: image_url)
   end
 
   test "image url" do
